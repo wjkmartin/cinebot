@@ -1,0 +1,19 @@
+{
+  "name": "cinebot",
+  "version": "1.0.0",
+  "description": "An app for rating movies and suggesting new ones that you haven't seen and will hopefully enjoy.",
+  "main": "server.js",
+  "scripts": {
+    "test": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wjkmartin/cinebot.git"
+  },
+  "author": "William Martin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wjkmartin/cinebot/issues"
+  },
+  "homepage": "https://github.com/wjkmartin/cinebot#readme"
+}
