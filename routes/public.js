@@ -9,4 +9,8 @@ router.get('/index', (req, res, next) => {
 	res.redirect('/');
 });
 
+router.get('/rate', publicController.getRate);
+router.get('/find', publicController.getFind);
+
+
 module.exports = router;
