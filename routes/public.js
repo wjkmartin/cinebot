@@ -10,6 +10,8 @@ router.get('/index', (req, res, next) => {
 });
 
 router.get('/rate', publicController.getRate);
+router.post('/rate', publicController.postRate);
+
 router.get('/find', publicController.getFind);
 
 
