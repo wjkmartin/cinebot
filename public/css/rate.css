@@ -14,6 +14,12 @@
   margin-top: 20px;
 }
 
+.rate--movie-poster {
+  width: 400px;
+  height: 650px;
+  margin: 0 auto;
+}
+
 button {
   padding: 10px;
   margin: 5px;

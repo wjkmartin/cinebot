@@ -1,4 +1,4 @@
-const API_KEY = '7ffcd202';
+const API_KEY = '7ffcd202'; //secret... don't steal. or do, I actually don't care.
 const APIString = "https://www.omdbapi.com/?" + "apikey=" + API_KEY;
 
 const fetch = require('node-fetch');
@@ -7,27 +7,34 @@ const getDB = require('../util/database').getDb;
 
 let currentMovie = {
     Title: 'oop',
+    Poster: 'https://via.placeholder.com/400x650',
 }
 
 module.exports = {
     getRandomMovie: () => {
-        const randomMovieData = getRandomMovieData()
+        getRandomMovieData()
             .then(data => {
                 setMovieData(data)
             })
-        return currentMovie
+        return new Promise((resolve, reject) => {
+            resolve(currentMovie)
+        })
     }
 }
 
 function setMovieData(data) {
     if (data.primaryTitle == undefined) {
         getMovieDataByID(data.tconst)
-        .then(data => {
-            setMovieDatabyType('title', data)})
-    }
-    else {
+            .then(data => {
+                setMovieDatabyType('title', data)
+            })
+    } else {
         currentMovie.Title = data.primaryTitle
     }
+    getMovieDataByID(data.tconst)
+        .then(data => {
+            setMovieDatabyType('posterURL', data)
+        })
 }
 
 function setMovieDatabyType(type, data) {
@@ -35,14 +42,20 @@ function setMovieDatabyType(type, data) {
         case 'title':
             currentMovie.Title = data.Title;
             break;
-    
+        case 'posterURL':
+            if (data.Poster == 'N/A') {
+                currentMovie.Poster = 'https://via.placeholder.com/400x650'
+            } else {
+                currentMovie.Poster = data.Poster;
+            }
+            break;
+
         default:
             break;
     }
 }
 
 function getMovieDataByID(IMDBid) {
-    console.log("imdb id is:" + IMDBid);
     let requestString = APIString + '&i=' + IMDBid;
 
     return fetch(requestString)
@@ -51,7 +64,6 @@ function getMovieDataByID(IMDBid) {
             return movieData;
         });
 }
-
 
 
 function getRandomMovieData() {

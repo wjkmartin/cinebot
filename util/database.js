@@ -7,7 +7,6 @@ const mongoConnect = callback => {
   MongoClient.connect(uri, {useNewUrlParser: true})
   .then(client => {
     _db = client.db("movieApp");
-    console.log("got DB")
     callback();
   })
   .catch(err => {
