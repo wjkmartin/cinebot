@@ -8,6 +8,7 @@ const getDB = require('../util/database').getDb;
 let currentMovie = {
     Title: 'oop',
     Poster: 'https://via.placeholder.com/400x650',
+    MovieID: 'ttsumthin'
 }
 
 module.exports = {
@@ -23,10 +24,11 @@ module.exports = {
 }
 
 function setMovieData(data) {
-    if (data.primaryTitle == undefined) {
-        getMovieDataByID(data.tconst)
-            .then(data => {
-                setMovieDatabyType('title', data)
+    currentMovie.MovieID = data.tconst;
+    if (data.primaryTitle == undefined) { //this movie does not have a primary title.
+        getMovieDataByID(data.tconst) //use openIMdb to get the title
+            .then(data => { 
+                setMovieDatabyType('title', data)          
             })
     } else {
         currentMovie.Title = data.primaryTitle
@@ -49,6 +51,7 @@ function setMovieDatabyType(type, data) {
                 currentMovie.Poster = data.Poster;
             }
             break;
+        
 
         default:
             break;
@@ -83,3 +86,4 @@ function getRandomMovieData() {
             console.log("DB ERROR: " + err);
         });
 }
+

@@ -1,4 +1,10 @@
 const movieFetcher = require('../models/movieFetching');
+const movieRater = require('../models/movieRating')
+
+const mongo = require('mongodb').ObjectID
+
+const userID = mongo.ObjectID('5dacf59e1c9d44000011c01a');
+let currentMovieID = 'tt123456'
 
 exports.getIndex = (req, res, next) => {
 	res.render('index', {
@@ -10,7 +16,7 @@ exports.getIndex = (req, res, next) => {
 exports.getRate = (req, res, next) => {
 	movieFetcher.getRandomMovie()
 		.then(movieData => {
-			console.log(movieData)
+			currentMovieID = movieData.MovieID
 			res.render('rate', {
 				docTitle: "Rate Movies You've Seen.",
 				path: 'rate',
@@ -22,7 +28,9 @@ exports.getRate = (req, res, next) => {
 
 exports.postRate = (req, res, next) => {
 	let buttonPressed = Object.keys(req.body)[0]; //which button was pressed.
-
+	
+	movieRater.recordRate(currentMovieID, buttonPressed, userID)
+	
 	const randomMovie = movieFetcher.getRandomMovie();
 
 	currentTitle = randomMovie.Title;
