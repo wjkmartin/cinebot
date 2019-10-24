@@ -8,4 +8,4 @@ This app as of right now will let you randomly traverse the entire imDb movie li
 
 I'm learning a ton about API interaction over HTTP and debugging long promise chains.
 
-Hosted here: https://cinebot-wm.herokuapp.com/
+Hosted here: https://cinebot-wm.herokuapp.com/ on a blazingly slow free-tier heroku dyno.
