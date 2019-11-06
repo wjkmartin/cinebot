@@ -31,10 +31,6 @@ exports.postRate = (req, res, next) => {
 	
 	movieRater.recordRate(currentMovieID, buttonPressed, userID)
 	
-	const randomMovie = movieFetcher.getRandomMovie();
-
-	currentTitle = randomMovie.Title;
-	currentMoviePoster = randomMovie.Poster;
 	this.getRate(req, res, next);
 }
 

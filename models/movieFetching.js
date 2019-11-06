@@ -6,20 +6,21 @@ const fetch = require('node-fetch');
 const getDB = require('../util/database').getDb;
 
 let currentMovie = {
-    Title: 'oop',
-    Poster: 'https://via.placeholder.com/400x650',
-    MovieID: 'ttsumthin'
+    // Title: 'oop',
+    // Poster: 'https://via.placeholder.com/400x650',
+    // MovieID: 'ttsumthin'
 }
 
 module.exports = {
-    getRandomMovie: () => {
-        getRandomMovieData()
-            .then(data => {
-                setMovieData(data)
-            })
-        return new Promise((resolve, reject) => {
+    getRandomMovie() {
+        let promise = new Promise((resolve, reject) => {
+            getRandomMovieData().then(data => {
+                setMovieData(data);
+            });
             resolve(currentMovie)
         })
+        return promise;
+        
     }
 }
 
@@ -27,8 +28,8 @@ function setMovieData(data) {
     currentMovie.MovieID = data.tconst;
     if (data.primaryTitle == undefined) { //this movie does not have a primary title.
         getMovieDataByID(data.tconst) //use openIMdb to get the title
-            .then(data => { 
-                setMovieDatabyType('title', data)          
+            .then(data => {
+                setMovieDatabyType('title', data)
             })
     } else {
         currentMovie.Title = data.primaryTitle
@@ -45,14 +46,13 @@ function setMovieDatabyType(type, data) {
             currentMovie.Title = data.Title;
             break;
         case 'posterURL':
-            if (data.Poster == 'N/A') {
+            console.log(data.Poster)
+            if (data.Poster == 'N/A') { //this movie has no poster in db- TODO: add fallback
                 currentMovie.Poster = 'https://via.placeholder.com/400x650'
             } else {
                 currentMovie.Poster = data.Poster;
             }
             break;
-        
-
         default:
             break;
     }
@@ -61,23 +61,36 @@ function setMovieDatabyType(type, data) {
 function getMovieDataByID(IMDBid) {
     let requestString = APIString + '&i=' + IMDBid;
 
-    return fetch(requestString)
-        .then(response => response.json())
-        .then(movieData => {
-            return movieData;
-        });
-}
+    let fetchData = async (url) => {
+        let response = await fetch(url)
+        let result = await response.json();
+        return result;
+    }
 
+    return fetchData(requestString);
+}
 
 function getRandomMovieData() {
     const db = getDB();
     return db
         .collection('imdbData')
         .aggregate([{
-            $sample: {
-                size: 1
+                $match: {
+                    $and: [{
+                        isAdult: 0
+                    }, {
+                        numVotes: {
+                            $gt: 200
+                        }
+                    }]
+                }
+            },
+            {
+                $sample: {
+                    size: 1
+                }
             }
-        }])
+        ])
         .toArray()
         .then(data => {
             return data[0]
@@ -86,4 +99,3 @@ function getRandomMovieData() {
             console.log("DB ERROR: " + err);
         });
 }
-
