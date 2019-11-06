@@ -28,7 +28,7 @@ exports.getRate = (req, res, next) => {
 
 exports.postRate = (req, res, next) => {
 	let buttonPressed = Object.keys(req.body)[0]; //which button was pressed.
-	
+
 	movieRater.recordRate(currentMovieID, buttonPressed, userID)
 	
 	this.getRate(req, res, next);

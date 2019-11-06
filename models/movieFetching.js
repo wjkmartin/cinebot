@@ -25,19 +25,11 @@ module.exports = {
 }
 
 function setMovieData(data) {
-    currentMovie.MovieID = data.tconst;
-    if (data.primaryTitle == undefined) { //this movie does not have a primary title.
-        getMovieDataByID(data.tconst) //use openIMdb to get the title
-            .then(data => {
-                setMovieDatabyType('title', data)
-            })
-    } else {
-        currentMovie.Title = data.primaryTitle
-    }
-    getMovieDataByID(data.tconst)
-        .then(data => {
-            setMovieDatabyType('posterURL', data)
-        })
+    currentMovie.MovieID = data.tconst; //always should exist.
+    getMovieDataByID(data.tconst).then(data => {
+        currentMovie.Poster = data.Poster;
+        currentMovie.Title = data.Title;
+    }); 
 }
 
 function setMovieDatabyType(type, data) {
