@@ -1,20 +1,24 @@
-const getDB = require('../util/database').getDb;
-const mongoObjectID = require('mongodb').ObjectID
+const mongoose = require('mongoose');
 
+const Schema = mongoose.Schema;
 
-class User {
-    constructor(email) {
-        this.email = email;
-        this._id = new mongoObjectID.ObjectID();
-        console.log(_id)
-    }
+const userSchema = new Schema({
+    email: {
+        type: String,
+        required: true
+    },
+    ratings: [{
+        movieId: {
+            type: Schema.Types.ObjectId,
+            ref: 'Movie',
+            required: true
+        },
+        rating: {
+            type: String,
+            required: true
+        }
+    }]
 
-    save() {}
+});
 
-    static findByID(userId) {
-        const db = getDB();
-        db.find( {"_id": userId} );
-    }
-}
-
-module.exports = User;
+module.exports = mongoose.model('User', userSchema)
