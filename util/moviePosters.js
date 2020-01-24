@@ -9,7 +9,12 @@ module.exports = function getMoviePosterURL(tconst) {
     let fetchData = async (url) => {
         let response = await fetch(url)
         let result = await response.json();
-        return result.Poster;
+        if (result.Poster === 'N/A') {
+            return '../img/poster_not_found.png'
+        }
+        else { 
+            return result.Poster; 
+        }
     }
 
     return fetchData(requestString);

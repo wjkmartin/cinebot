@@ -17,8 +17,8 @@ const userSchema = new Schema({
             type: String,
             required: true
         }
-    }]
-
+    }],
+    currentMovieId: Schema.Types.ObjectId
 });
 
 module.exports = mongoose.model('User', userSchema)
