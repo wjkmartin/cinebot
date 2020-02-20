@@ -20,7 +20,7 @@ exports.getRate = (req, res, next) => {
 							},
 							{
 								numVotes: {
-									$gt: 200
+									$gt: 3500
 								}
 							}
 						]
@@ -50,6 +50,7 @@ exports.getRate = (req, res, next) => {
 						docTitle: "Rate Movies You've Seen.",
 						path: 'rate',
 						movieTitle: movieData.primaryTitle,
+						movieReleaseYear: movieData.startYear,
 						currentMoviePoster: movieData.poster
 					})
 				})
