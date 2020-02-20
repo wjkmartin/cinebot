@@ -11,14 +11,23 @@ const userSchema = new Schema({
         movieId: {
             type: Schema.Types.ObjectId,
             ref: 'Movie',
-            required: true
         },
+        tconst: String,
+        releaseYear: String,
+        genres: String,
+        avgUserRating: Number,
+        numUserVotes: Number,
         rating: {
             type: String,
             required: true
-        }
+        },
     }],
-    currentMovieId: Schema.Types.ObjectId
+    currentMovieId: Schema.Types.ObjectId,
+    currentMovieTConst: String,
+    currentMovieReleaseYear: Number,
+    currentMovieGenres: String,
+    currentMovieRating: Number,
+    currentMovieNumVotes: Number,
 });
 
 module.exports = mongoose.model('User', userSchema)

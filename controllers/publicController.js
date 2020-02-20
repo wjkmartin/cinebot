@@ -39,8 +39,13 @@ exports.getRate = (req, res, next) => {
 					movieData.poster = posterURL;
 				})
 				.then(data => {
-					req.user.currentMovieId = movieData._id;
-					req.user.save();
+					req.activeUser.currentMovieId = movieData._id;
+					req.activeUser.currentMovieTConst = movieData.tconst;
+					req.activeUser.currentMovieReleaseYear = movieData.startYear;
+					req.activeUser.currentMovieGenres = movieData.genres;
+					req.activeUser.currentMovieRating = movieData.averageRating;
+					req.activeUser.currentMovieNumVotes = movieData.numVotes;
+					req.activeUser.save();
 					res.render('rate', {
 						docTitle: "Rate Movies You've Seen.",
 						path: 'rate',
@@ -53,10 +58,15 @@ exports.getRate = (req, res, next) => {
 
 exports.postRate = (req, res, next) => {
 	let buttonPressed = Object.keys(req.body)[0]; //which button was pressed.
-	req.user.ratings.push({
-		movieId: req.user.currentMovieId,
+	req.activeUser.ratings.push({
+		movieId: req.activeUser.currentMovieId,
+		tconst: req.activeUser.currentMovieTConst,
+		releaseYear: req.activeUser.currentMovieStartYear,
+		genres: req.activeUser.currentMovieGenres,
+		avgUserRating: req.activeUser.currentMovieRating,
+		numUserVotes: req.activeUser.currentMovieNumVotes,
 		rating: buttonPressed
 	})
-	req.user.save();
+	req.activeUser.save();
 	this.getRate(req, res, next);
 }
